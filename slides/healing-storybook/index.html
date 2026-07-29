@@ -1,0 +1,941 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>自律庄园 · 治愈绘本版</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #21484b;
+        --leaf: #2ba889;
+        --mint: #dff6ec;
+        --sky: #dff6fa;
+        --cream: #fffaf0;
+        --apricot: #ffe5bd;
+        --rose: #f8c8d6;
+        --berry: #d97191;
+        --line: rgba(33, 72, 75, 0.14);
+        --muted: #668184;
+        --shadow: 0 22px 60px rgba(33, 72, 75, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 12% 12%, rgba(223, 246, 250, 0.95), transparent 340px),
+          radial-gradient(circle at 84% 18%, rgba(248, 200, 214, 0.42), transparent 320px),
+          radial-gradient(circle at 76% 86%, rgba(255, 229, 189, 0.58), transparent 360px),
+          linear-gradient(180deg, #fbfffc, #f7fcf6);
+        color: var(--ink);
+        font-family: "Avenir Next", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", ui-rounded, system-ui, sans-serif;
+      }
+
+      button,
+      a {
+        font: inherit;
+      }
+
+      .storybook {
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .slides {
+        display: flex;
+        width: 700vw;
+        height: 100%;
+        transition: transform 520ms cubic-bezier(.22, 1, .36, 1);
+      }
+
+      .page {
+        position: relative;
+        flex: 0 0 100vw;
+        min-width: 100vw;
+        height: 100vh;
+        padding: clamp(28px, 5vw, 68px);
+        overflow: hidden;
+      }
+
+      .page::before {
+        position: absolute;
+        inset: clamp(14px, 2vw, 28px);
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        background:
+          linear-gradient(rgba(43, 168, 137, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(43, 168, 137, 0.05) 1px, transparent 1px);
+        background-size: 36px 36px;
+        content: "";
+        pointer-events: none;
+      }
+
+      .page-inner {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        height: 100%;
+        grid-template-columns: minmax(0, 0.9fr) minmax(360px, 1.1fr);
+        gap: clamp(28px, 5vw, 74px);
+        align-items: center;
+      }
+
+      .copy {
+        max-width: 650px;
+      }
+
+      .kicker {
+        margin: 0 0 12px;
+        color: var(--leaf);
+        font-size: 13px;
+        font-weight: 900;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2 {
+        margin: 0;
+        color: var(--ink);
+        letter-spacing: 0;
+        line-height: 1.02;
+      }
+
+      h1 {
+        max-width: 720px;
+        font-size: clamp(54px, 7vw, 106px);
+      }
+
+      h2 {
+        max-width: 740px;
+        font-size: clamp(42px, 5.5vw, 78px);
+      }
+
+      p {
+        max-width: 680px;
+        color: var(--muted);
+        font-size: 19px;
+        line-height: 1.72;
+      }
+
+      .storybook-note {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 34px;
+        padding: 6px 12px;
+        border: 1px solid rgba(217, 113, 145, 0.24);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.72);
+        color: #8d5262;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .storybook-note span {
+        color: var(--berry);
+      }
+
+      .illustration {
+        position: relative;
+        min-height: 570px;
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        background:
+          radial-gradient(circle at 62% 20%, rgba(255, 229, 189, 0.76), transparent 140px),
+          linear-gradient(180deg, #dff6fa 0 42%, #eef9ed 42% 62%, #bfe9d8 62% 100%);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .cover-poster {
+        position: relative;
+        display: grid;
+        place-items: center;
+        min-height: 570px;
+        padding: clamp(18px, 2.4vw, 34px);
+        border: 1px solid rgba(33, 72, 75, 0.14);
+        border-radius: 28px;
+        background:
+          radial-gradient(circle at 16% 16%, rgba(223, 246, 250, 0.8), transparent 220px),
+          radial-gradient(circle at 84% 86%, rgba(248, 200, 214, 0.3), transparent 240px),
+          linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(255, 250, 240, 0.74));
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .cover-poster::before {
+        position: absolute;
+        inset: 18px;
+        border: 1px dashed rgba(43, 168, 137, 0.2);
+        border-radius: 24px;
+        content: "";
+      }
+
+      .cover-poster img {
+        position: relative;
+        z-index: 1;
+        width: min(92%, 430px);
+        max-height: 76vh;
+        object-fit: cover;
+        border: 1px solid rgba(33, 72, 75, 0.12);
+        border-radius: 24px;
+        box-shadow: 0 24px 58px rgba(33, 72, 75, 0.18);
+      }
+
+      .poster-caption {
+        position: absolute;
+        right: 32px;
+        bottom: 26px;
+        z-index: 2;
+        max-width: 220px;
+        padding: 10px 14px;
+        border: 1px solid rgba(217, 113, 145, 0.22);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.82);
+        color: #8d5262;
+        font-size: 13px;
+        font-weight: 900;
+        box-shadow: 0 12px 30px rgba(33, 72, 75, 0.1);
+      }
+
+      .sun {
+        position: absolute;
+        top: 52px;
+        right: 72px;
+        width: 84px;
+        height: 84px;
+        border-radius: 50%;
+        background: #ffd982;
+        box-shadow: 0 0 0 18px rgba(255, 217, 130, 0.2);
+      }
+
+      .cloud {
+        position: absolute;
+        top: 82px;
+        left: 62px;
+        width: 126px;
+        height: 44px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.86);
+      }
+
+      .cloud::before,
+      .cloud::after {
+        position: absolute;
+        bottom: 12px;
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        background: inherit;
+        content: "";
+      }
+
+      .cloud::before {
+        left: 20px;
+      }
+
+      .cloud::after {
+        right: 22px;
+        width: 58px;
+        height: 58px;
+      }
+
+      .island {
+        position: absolute;
+        right: 44px;
+        bottom: 42px;
+        left: 44px;
+        height: 54%;
+        border-radius: 52% 48% 20% 20% / 34% 34% 18% 18%;
+        background:
+          radial-gradient(circle at 22% 22%, rgba(248, 200, 214, 0.44), transparent 76px),
+          linear-gradient(180deg, #bce8ce, #7bcfb0);
+        box-shadow: inset 0 34px 0 rgba(255, 255, 255, 0.22);
+      }
+
+      .manor {
+        position: absolute;
+        right: 22%;
+        bottom: 42%;
+        width: 250px;
+        height: 170px;
+      }
+
+      .roof {
+        position: absolute;
+        top: 0;
+        left: 26px;
+        width: 198px;
+        height: 80px;
+        clip-path: polygon(50% 0, 100% 78%, 0 78%);
+        background: #76c9dc;
+      }
+
+      .house {
+        position: absolute;
+        right: 28px;
+        bottom: 0;
+        left: 28px;
+        height: 112px;
+        border: 2px solid rgba(33, 72, 75, 0.18);
+        border-radius: 18px;
+        background: linear-gradient(180deg, #fffaf0, #fff1d8);
+        box-shadow: 0 18px 32px rgba(33, 72, 75, 0.12);
+      }
+
+      .door {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 48px;
+        height: 70px;
+        border-radius: 18px 18px 0 0;
+        background: linear-gradient(180deg, #2ba889, #16846f);
+        transform: translateX(-50%);
+      }
+
+      .window {
+        position: absolute;
+        top: 28px;
+        width: 42px;
+        height: 38px;
+        border-radius: 12px;
+        background:
+          linear-gradient(90deg, transparent 48%, rgba(255, 255, 255, 0.82) 48% 52%, transparent 52%),
+          linear-gradient(transparent 48%, rgba(255, 255, 255, 0.82) 48% 52%, transparent 52%),
+          #dff6fa;
+      }
+
+      .window.left {
+        left: 26px;
+      }
+
+      .window.right {
+        right: 26px;
+      }
+
+      .path {
+        position: absolute;
+        right: 38%;
+        bottom: 0;
+        width: 78px;
+        height: 210px;
+        background: linear-gradient(180deg, rgba(255, 229, 189, 0.86), rgba(255, 250, 240, 0.36));
+        clip-path: polygon(42% 0, 58% 0, 100% 100%, 0 100%);
+      }
+
+      .flower {
+        position: absolute;
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        background: radial-gradient(circle, #fffaf0 0 22%, #f8c8d6 24% 58%, transparent 60%);
+      }
+
+      .flower.one {
+        right: 104px;
+        bottom: 128px;
+      }
+
+      .flower.two {
+        left: 96px;
+        bottom: 94px;
+        transform: scale(0.8);
+      }
+
+      .cover-buddy {
+        position: absolute;
+        z-index: 3;
+        display: grid;
+        place-items: center;
+        width: 62px;
+        height: 62px;
+        border: 1px solid rgba(33, 72, 75, 0.12);
+        border-radius: 24px;
+        background: rgba(255, 255, 255, 0.78);
+        box-shadow: 0 12px 26px rgba(33, 72, 75, 0.1);
+        font-size: 34px;
+      }
+
+      .cover-buddy.cat {
+        right: 142px;
+        bottom: 132px;
+      }
+
+      .cover-buddy.rabbit {
+        left: 132px;
+        bottom: 118px;
+      }
+
+      .cover-buddy.dog {
+        right: 245px;
+        bottom: 76px;
+        transform: scale(0.86);
+      }
+
+      .animal-row,
+      .task-stack,
+      .impact-path,
+      .metric-board {
+        position: relative;
+        display: grid;
+        gap: 14px;
+      }
+
+      .animal-card,
+      .task-card,
+      .impact-card,
+      .metric-card {
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.82);
+        box-shadow: 0 14px 36px rgba(33, 72, 75, 0.08);
+      }
+
+      .animal-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .animal-card {
+        display: grid;
+        grid-template-columns: 58px 1fr;
+        align-items: center;
+        gap: 14px;
+        min-height: 98px;
+        padding: 16px;
+      }
+
+      .animal {
+        position: relative;
+        display: grid;
+        place-items: center;
+        width: 58px;
+        height: 58px;
+        border-radius: 22px;
+        background: linear-gradient(135deg, var(--sky), var(--cream));
+        font-size: 32px;
+      }
+
+      .animal-card strong,
+      .task-card strong,
+      .impact-card strong,
+      .metric-card strong {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--ink);
+        font-size: 18px;
+      }
+
+      .animal-card span,
+      .task-card span,
+      .impact-card span,
+      .metric-card span {
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .task-card {
+        display: grid;
+        grid-template-columns: 54px 1fr auto;
+        align-items: center;
+        gap: 14px;
+        min-height: 82px;
+        padding: 14px 16px;
+      }
+
+      .task-icon {
+        display: grid;
+        place-items: center;
+        width: 54px;
+        height: 54px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, #fffaf0, #dff6ec);
+        font-size: 28px;
+      }
+
+      .coin {
+        min-width: 58px;
+        padding: 7px 10px;
+        border-radius: 999px;
+        background: #fff2cd;
+        color: #8c641f;
+        font-weight: 900;
+        text-align: center;
+      }
+
+      .room {
+        position: relative;
+        min-height: 520px;
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        background:
+          radial-gradient(circle at 20% 18%, rgba(248, 200, 214, 0.36), transparent 150px),
+          linear-gradient(180deg, #effafa 0 32%, #fffaf0 32% 72%, #b8ded3 72% 100%);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .room-item {
+        position: absolute;
+        display: grid;
+        place-items: center;
+        width: 98px;
+        height: 98px;
+        border: 1px solid rgba(33, 72, 75, 0.12);
+        border-radius: 26px;
+        background: rgba(255, 255, 255, 0.72);
+        box-shadow: 0 14px 30px rgba(33, 72, 75, 0.1);
+        font-size: 42px;
+      }
+
+      .room-item:nth-child(1) {
+        left: 10%;
+        top: 48%;
+      }
+
+      .room-item:nth-child(2) {
+        right: 12%;
+        top: 32%;
+      }
+
+      .room-item:nth-child(3) {
+        left: 42%;
+        bottom: 12%;
+      }
+
+      .impact-path {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .impact-card,
+      .metric-card {
+        min-height: 178px;
+        padding: 18px;
+      }
+
+      .impact-card b {
+        display: block;
+        margin-bottom: 14px;
+        color: var(--berry);
+        font-size: 34px;
+      }
+
+      .metric-board {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .metric-card b {
+        display: block;
+        color: var(--leaf);
+        font-size: 42px;
+        line-height: 1;
+      }
+
+      .ending-card {
+        max-width: 620px;
+        padding: 28px;
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        background: rgba(255, 255, 255, 0.8);
+        box-shadow: var(--shadow);
+      }
+
+      .ending-card ul {
+        display: grid;
+        gap: 12px;
+        margin: 20px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .ending-card li {
+        padding: 12px 14px;
+        border-radius: 16px;
+        background: rgba(223, 246, 236, 0.62);
+        color: var(--ink);
+        font-weight: 700;
+      }
+
+      .controls {
+        position: fixed;
+        right: 28px;
+        bottom: 24px;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .controls button,
+      .back-link {
+        min-height: 38px;
+        border: 1px solid rgba(33, 72, 75, 0.16);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.76);
+        color: var(--ink);
+        text-decoration: none;
+        box-shadow: 0 10px 24px rgba(33, 72, 75, 0.08);
+      }
+
+      .controls button {
+        width: 42px;
+        cursor: pointer;
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        padding: 0 14px;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .pager {
+        min-width: 62px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 800;
+        text-align: center;
+      }
+
+      .progress {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        z-index: 11;
+        height: 5px;
+        background: linear-gradient(90deg, var(--sky), var(--leaf), var(--apricot), var(--rose));
+        transition: width 520ms cubic-bezier(.22, 1, .36, 1);
+      }
+
+      .floaty {
+        animation: floaty 4.8s ease-in-out infinite;
+      }
+
+      @keyframes floaty {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .slides,
+        .progress,
+        .floaty {
+          animation: none;
+          transition: none;
+        }
+      }
+
+      @media (max-width: 900px) {
+        html,
+        body {
+          width: 100%;
+          max-width: 100%;
+          overflow-x: hidden;
+        }
+
+        body {
+          overflow: auto;
+        }
+
+        .storybook {
+          width: 100%;
+          height: 100dvh;
+          overflow-x: hidden;
+        }
+
+        .slides {
+          display: flex;
+          width: 700vw;
+          height: 100%;
+        }
+
+        .page {
+          width: 100%;
+          max-width: 100vw;
+          flex: 0 0 100vw;
+          min-width: 100vw;
+          min-height: 100dvh;
+          height: 100dvh;
+          padding: 36px 18px 84px;
+          overflow: auto;
+        }
+
+        .page-inner {
+          max-width: 100%;
+          grid-template-columns: 1fr;
+          gap: 24px;
+          overflow: hidden;
+        }
+
+        .copy,
+        .copy p {
+          max-width: calc(100vw - 36px);
+          overflow-wrap: anywhere;
+          word-break: break-all;
+        }
+
+        h1 {
+          max-width: calc(100vw - 36px);
+          font-size: 44px;
+        }
+
+        h2 {
+          font-size: 34px;
+          line-height: 1.12;
+        }
+
+        p {
+          font-size: 16px;
+        }
+
+        .illustration,
+        .cover-poster,
+        .room {
+          width: calc(100vw - 36px);
+          max-width: calc(100vw - 36px);
+          min-height: 430px;
+        }
+
+        .cover-poster {
+          justify-items: start;
+          padding: 14px;
+        }
+
+        .cover-poster img {
+          width: min(88vw, 292px);
+          max-height: 68vh;
+          border-radius: 18px;
+        }
+
+        .poster-caption {
+          right: auto;
+          left: 34px;
+          bottom: 22px;
+          max-width: 190px;
+          font-size: 12px;
+        }
+
+        .manor {
+          right: auto;
+          left: 18px;
+          transform: scale(0.78);
+          transform-origin: bottom left;
+        }
+
+        .sun {
+          right: 84px;
+          width: 72px;
+          height: 72px;
+        }
+
+        .cloud {
+          left: 34px;
+        }
+
+        .cover-buddy.cat {
+          right: 20px;
+          bottom: 112px;
+        }
+
+        .cover-buddy.rabbit {
+          left: 32px;
+          bottom: 102px;
+        }
+
+        .cover-buddy.dog {
+          right: 106px;
+          bottom: 58px;
+        }
+
+        .animal-row,
+        .impact-path,
+        .metric-board {
+          grid-template-columns: 1fr;
+        }
+
+        .controls {
+          right: 14px;
+          bottom: 14px;
+        }
+
+        .back-link {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="storybook" aria-label="自律庄园治愈绘本版展示册">
+      <div class="slides" id="slides">
+        <section class="page">
+          <div class="page-inner">
+            <div class="copy">
+              <p class="kicker">Healing Storybook · Portfolio Extra</p>
+              <h1>自律庄园</h1>
+              <p>把每天的小坚持画成一座会发光的庄园。这里有打卡、装扮、公益贡献，也有陪用户继续往前走的小伙伴。</p>
+              <span class="storybook-note"><span>●</span> 更适合展示产品的情绪价值与轻游戏氛围</span>
+            </div>
+            <div class="cover-poster">
+              <img src="../../assets/posters/self-manor-concept-poster.png" alt="自律庄园治愈版概念海报">
+              <span class="poster-caption">封面主视觉 · 自律成长 × 公益贡献</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="page">
+          <div class="page-inner">
+            <div class="copy">
+              <p class="kicker">World View</p>
+              <h2>每完成一次自律，庄园就多一点光。</h2>
+              <p>治愈版把“行为反馈”做得更有画面感：用户不是在完成冰冷任务，而是在照顾一个属于自己的成长空间。</p>
+            </div>
+            <div class="animal-row">
+              <article class="animal-card"><span class="animal">🐱</span><div><strong>小猫管家</strong><span>解释今天的成长结果，给出下一步建议。</span></div></article>
+              <article class="animal-card"><span class="animal">🐶</span><div><strong>晨跑伙伴</strong><span>陪用户完成运动和早睡这类行动任务。</span></div></article>
+              <article class="animal-card"><span class="animal">🐰</span><div><strong>阅读伙伴</strong><span>把阅读、学习、日记变成安静的陪伴时刻。</span></div></article>
+              <article class="animal-card"><span class="animal">🐻</span><div><strong>公益志愿者</strong><span>把公益能量送到综合公益项目池。</span></div></article>
+            </div>
+          </div>
+        </section>
+
+        <section class="page">
+          <div class="page-inner">
+            <div class="copy">
+              <p class="kicker">Daily Check-in</p>
+              <h2>今日任务像一张温柔的待办卡。</h2>
+              <p>用户完成任务后获得金币、经验和公益能量。轻量奖励让坚持有即时反馈，也为后续装扮和公益贡献提供驱动力。</p>
+            </div>
+            <div class="task-stack">
+              <article class="task-card"><span class="task-icon">🏋️</span><div><strong>健身</strong><span>20 分钟身体唤醒</span></div><span class="coin">+10</span></article>
+              <article class="task-card"><span class="task-icon">📖</span><div><strong>阅读</strong><span>读 20 页好书</span></div><span class="coin">+10</span></article>
+              <article class="task-card"><span class="task-icon">🌙</span><div><strong>早睡</strong><span>23:00 前入睡</span></div><span class="coin">+10</span></article>
+              <article class="task-card"><span class="task-icon">✍️</span><div><strong>日记</strong><span>记录今天的三件小事</span></div><span class="coin">+10</span></article>
+            </div>
+          </div>
+        </section>
+
+        <section class="page">
+          <div class="page-inner">
+            <div class="copy">
+              <p class="kicker">Decoration</p>
+              <h2>金币不是数字，是可以亲手摆放的生活感。</h2>
+              <p>用户购买装饰后，可以拖到庭院或小屋里。治愈版强化“拥有感”：每个物品都像一段坚持留下来的痕迹。</p>
+            </div>
+            <div class="room" aria-hidden="true">
+              <span class="room-item">🛋️</span>
+              <span class="room-item">🌸</span>
+              <span class="room-item">📚</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="page">
+          <div class="page-inner">
+            <div class="copy">
+              <p class="kicker">Public Benefit Loop</p>
+              <h2>自律能量，也可以流向真实世界。</h2>
+              <p>公益模块展示产品的价值延展：用户的坚持先转化为公益能量，再投入综合公益项目池，未来可接入真实公益机构和捐赠凭证。</p>
+            </div>
+            <div class="impact-path">
+              <article class="impact-card"><b>01</b><strong>完成任务</strong><span>打卡行为产生金币、经验和公益能量。</span></article>
+              <article class="impact-card"><b>02</b><strong>选择项目</strong><span>支持助学、灾害救助、医疗援助等综合公益方向。</span></article>
+              <article class="impact-card"><b>03</b><strong>看到反馈</strong><span>展示项目进度、贡献记录和模拟影响力。</span></article>
+            </div>
+          </div>
+        </section>
+
+        <section class="page">
+          <div class="page-inner">
+            <div class="copy">
+              <p class="kicker">Validation</p>
+              <h2>温柔画风背后，也要有产品闭环。</h2>
+              <p>这页用于面试讲述：产品不是只有好看的页面，还能说明用户路径、行为数据、留存指标和后续迭代方向。</p>
+            </div>
+            <div class="metric-board">
+              <article class="metric-card"><b>4 步</b><strong>新手引导</strong><span>打卡、进屋、装扮、投入公益能量。</span></article>
+              <article class="metric-card"><b>6 项</b><strong>核心习惯</strong><span>覆盖运动、冥想、阅读、学习、早睡、日记。</span></article>
+              <article class="metric-card"><b>3 类</b><strong>激励反馈</strong><span>金币、经验、公益能量构成复合奖励。</span></article>
+              <article class="metric-card"><b>V4</b><strong>迭代状态</strong><span>已补齐数据闭环、新手路径和展示材料。</span></article>
+            </div>
+          </div>
+        </section>
+
+        <section class="page">
+          <div class="page-inner">
+            <div class="copy">
+              <p class="kicker">Portfolio Takeaway</p>
+              <h2>这是一个能讲清“产品深度”的治愈型 Demo。</h2>
+              <p>绘本版负责表达温度，交互 Demo 负责证明可用，PPT 负责讲清逻辑。三者组合后，更像一份完整的产品作品集。</p>
+            </div>
+            <div class="ending-card">
+              <strong>面试可讲的三个重点</strong>
+              <ul>
+                <li>不是普通打卡工具，而是“自律成长 × 装扮反馈 × 公益贡献”的复合闭环。</li>
+                <li>不只做视觉表达，也有可点击、可拖动、可升级的交互 Demo。</li>
+                <li>未来可以接公益机构、真实捐赠凭证、用户留存和转化数据。</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div class="controls" aria-label="绘本翻页控制">
+      <a class="back-link" href="../../index.html#assets">返回作品集</a>
+      <button id="prev" type="button" aria-label="上一页">‹</button>
+      <span class="pager" id="pager">01 / 07</span>
+      <button id="next" type="button" aria-label="下一页">›</button>
+    </div>
+    <div class="progress" id="progress" style="width: 14.2857%"></div>
+
+    <script>
+      const slides = document.getElementById("slides");
+      const pager = document.getElementById("pager");
+      const progress = document.getElementById("progress");
+      const total = 7;
+      let current = 0;
+
+      function updateSlide() {
+        slides.style.transform = `translateX(-${current * 100}vw)`;
+        pager.textContent = `${String(current + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
+        progress.style.width = `${((current + 1) / total) * 100}%`;
+      }
+
+      document.getElementById("prev").addEventListener("click", () => {
+        current = Math.max(0, current - 1);
+        updateSlide();
+      });
+
+      document.getElementById("next").addEventListener("click", () => {
+        current = Math.min(total - 1, current + 1);
+        updateSlide();
+      });
+
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowRight" || event.key === " ") {
+          current = Math.min(total - 1, current + 1);
+          updateSlide();
+        }
+        if (event.key === "ArrowLeft") {
+          current = Math.max(0, current - 1);
+          updateSlide();
+        }
+      });
+    </script>
+  </body>
+</html>

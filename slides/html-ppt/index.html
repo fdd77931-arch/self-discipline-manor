@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>自律庄园 · 科技感作品集答辩</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f7fcf9;
+        --panel: rgba(255, 255, 255, 0.76);
+        --panel-strong: rgba(255, 255, 255, 0.92);
+        --line: rgba(18, 108, 104, 0.16);
+        --text: #123d43;
+        --muted: #5f7c80;
+        --cyan: #58b9cf;
+        --mint: #34b996;
+        --teal: #137d72;
+        --warm: #ffe8c7;
+        --blush: #f8cfda;
+        --ink: #123d43;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 14% 10%, rgba(155, 223, 238, 0.42), transparent 34vw),
+          radial-gradient(circle at 82% 80%, rgba(248, 207, 218, 0.28), transparent 32vw),
+          radial-gradient(circle at 78% 18%, rgba(255, 232, 199, 0.42), transparent 30vw),
+          linear-gradient(135deg, #f7fcf9, #eaf9f7 58%, #fff8ee);
+        color: var(--text);
+        font-family: "Avenir Next", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+      }
+
+      .deck {
+        width: 100vw;
+        height: 100vh;
+      }
+
+      .slide {
+        position: absolute;
+        inset: 0;
+        display: none;
+        grid-template-columns: 0.9fr 1.1fr;
+        gap: 48px;
+        align-items: center;
+        padding: clamp(36px, 6vw, 86px);
+      }
+
+      .slide.is-active {
+        display: grid;
+      }
+
+      .slide::before {
+        position: absolute;
+        inset: 24px;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        background:
+          linear-gradient(rgba(18, 108, 104, 0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(18, 108, 104, 0.035) 1px, transparent 1px);
+        background-size: 34px 34px;
+        content: "";
+        pointer-events: none;
+        mask-image: linear-gradient(90deg, black, transparent 88%);
+      }
+
+      .kicker {
+        margin: 0 0 12px;
+        color: var(--mint);
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2 {
+        position: relative;
+        margin: 0;
+        line-height: 0.98;
+        letter-spacing: 0;
+      }
+
+      h1 {
+        max-width: 760px;
+        font-size: clamp(56px, 7vw, 104px);
+      }
+
+      h2 {
+        max-width: 760px;
+        font-size: clamp(42px, 5.6vw, 82px);
+      }
+
+      p {
+        position: relative;
+        max-width: 660px;
+        color: var(--muted);
+        font-size: 19px;
+        line-height: 1.68;
+      }
+
+      .panel,
+      .metric,
+      .flow-step {
+        position: relative;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: var(--panel);
+        box-shadow: 0 24px 70px rgba(18, 108, 104, 0.1);
+        backdrop-filter: blur(18px);
+      }
+
+      .panel {
+        padding: 26px;
+      }
+
+      .poster {
+        width: min(36vw, 420px);
+        max-height: 72vh;
+        object-fit: cover;
+        border: 1px solid rgba(18, 108, 104, 0.18);
+        border-radius: 24px;
+        box-shadow: 0 28px 70px rgba(18, 108, 104, 0.14);
+      }
+
+      .metrics,
+      .cards {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .metric {
+        padding: 20px;
+      }
+
+      .metric b {
+        display: block;
+        color: var(--mint);
+        font-size: 42px;
+        line-height: 1;
+      }
+
+      .metric span,
+      .flow-step span {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .flow {
+        position: relative;
+        display: grid;
+        gap: 14px;
+      }
+
+      .flow-step {
+        padding: 18px 20px;
+      }
+
+      .flow-step strong {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--text);
+        font-size: 20px;
+      }
+
+      .device {
+        position: relative;
+        width: min(36vw, 440px);
+        min-height: 600px;
+        padding: 18px;
+        border: 1px solid rgba(18, 108, 104, 0.18);
+        border-radius: 38px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(221, 246, 236, 0.42));
+        box-shadow: 0 24px 70px rgba(18, 108, 104, 0.11);
+      }
+
+      .screen {
+        height: 100%;
+        min-height: 560px;
+        border-radius: 26px;
+        background:
+          radial-gradient(circle at 54% 20%, rgba(248, 207, 218, 0.38), transparent 140px),
+          radial-gradient(circle at 28% 14%, rgba(255, 232, 199, 0.52), transparent 160px),
+          linear-gradient(180deg, #dff6fa 0 36%, #ddf6ec 36% 58%, #a9ddc7 58% 100%);
+        color: var(--ink);
+        padding: 22px;
+      }
+
+      .screen h3 {
+        margin: 0 0 12px;
+        font-size: 24px;
+      }
+
+      .mini-card {
+        margin-top: 12px;
+        padding: 14px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .footer {
+        position: fixed;
+        right: 34px;
+        bottom: 26px;
+        z-index: 5;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .progress {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        z-index: 6;
+        height: 4px;
+        background: linear-gradient(90deg, var(--cyan), var(--mint), #f6d77a, #f4a7b9);
+        transition: none;
+      }
+
+      @media (max-width: 860px) {
+        body {
+          overflow: auto;
+        }
+
+        .deck {
+          height: auto;
+        }
+
+        .slide,
+        .slide.is-active {
+          position: relative;
+          display: grid;
+          min-height: 100vh;
+          grid-template-columns: 1fr;
+          padding: 42px 22px 74px;
+        }
+
+        .poster,
+        .device {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="deck" aria-label="自律庄园作品集答辩幻灯片">
+      <section class="slide is-active">
+        <div>
+          <p class="kicker">Portfolio Demo · AI Product</p>
+          <h1>自律庄园</h1>
+          <p>把日常自律行为转化为金币、庄园建设和公益贡献，让坚持从抽象口号变成可见反馈。</p>
+        </div>
+        <img class="poster" src="../../assets/posters/self-manor-concept-poster.png" alt="自律庄园概念海报">
+      </section>
+
+      <section class="slide">
+        <div>
+          <p class="kicker">Problem</p>
+          <h2>打卡工具的反馈太轻</h2>
+          <p>用户完成习惯后只得到一个勾选状态，难以感知“今天的努力改变了什么”。项目用游戏化空间和公益能量补足持续行动的情绪回报。</p>
+        </div>
+        <div class="metrics">
+          <div class="metric"><b>6</b><span>核心习惯入口</span></div>
+          <div class="metric"><b>5</b><span>综合公益方向</span></div>
+          <div class="metric"><b>3</b><span>房屋成长等级</span></div>
+          <div class="metric"><b>1</b><span>可跑通 MVP 闭环</span></div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div>
+          <p class="kicker">Product Loop</p>
+          <h2>自律行为被设计成闭环</h2>
+        </div>
+        <div class="flow">
+          <div class="flow-step"><strong>打卡</strong><span>完成健身、冥想、阅读、学习、早睡、日记。</span></div>
+          <div class="flow-step"><strong>奖励</strong><span>获得金币、经验和公益能量，即时反馈行动价值。</span></div>
+          <div class="flow-step"><strong>建设</strong><span>购买装饰、拖动摆放、点击房门进出小屋。</span></div>
+          <div class="flow-step"><strong>贡献</strong><span>把公益能量投入动物救助、助学、灾区援助、环保、医疗援助。</span></div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div>
+          <p class="kicker">MVP</p>
+          <h2>首屏就是可交互产品</h2>
+          <p>作品集没有停留在 PRD，而是把核心路径做成可体验网页：面试官打开链接后，可以直接点击、打卡、买物品、拖动布置和进出小屋。</p>
+        </div>
+        <div class="device">
+          <div class="screen">
+            <h3>今日打卡 0/6</h3>
+            <div class="mini-card">金币、等级、房屋、经验、公益能量同步变化</div>
+            <div class="mini-card">点击房门进入小屋，点击室内门回到庭院</div>
+            <div class="mini-card">已购买物品可拖动，位置保存在本地</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div>
+          <p class="kicker">Validation</p>
+          <h2>数据闭环回答项目深度</h2>
+          <p>作品集内置新手引导、行为指标和迭代记录，用来说明后续如何验证激励机制、留存、公益转化和用户路径完成率。</p>
+        </div>
+        <div class="cards">
+          <div class="panel">核心路径完成率</div>
+          <div class="panel">打卡次数</div>
+          <div class="panel">公益投入</div>
+          <div class="panel">摆放保存</div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div>
+          <p class="kicker">Public Benefit</p>
+          <h2>公益机制先模拟，落地再合规</h2>
+          <p>当前版本用公益能量模拟真实捐赠路径。真实落地阶段可接入合规公益机构、品牌配捐、公开凭证和用户可追踪的公益反馈。</p>
+        </div>
+        <div class="flow">
+          <div class="flow-step"><strong>用户行动</strong><span>完成自律任务，产生公益能量。</span></div>
+          <div class="flow-step"><strong>方向选择</strong><span>用户选择综合公益项目池中的支持方向。</span></div>
+          <div class="flow-step"><strong>公开凭证</strong><span>后续接入合规机构与配捐记录，形成可信闭环。</span></div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <div>
+          <p class="kicker">Interview Story</p>
+          <h2>这个项目证明什么</h2>
+          <p>它证明我能从用户痛点出发，设计核心闭环，做出可交互 MVP，并用数据口径和迭代记录解释产品效果。</p>
+        </div>
+        <div class="panel">
+          <p>下一步：接入真实用户测试，记录 7 日留存、公益能量使用率、装饰购买率和房屋升级率，把作品从 demo 推到验证型项目。</p>
+        </div>
+      </section>
+    </main>
+    <div class="footer">← → 翻页 · 自律庄园作品集</div>
+    <div class="progress" id="progress"></div>
+    <script>
+      const slides = [...document.querySelectorAll(".slide")];
+      const progress = document.querySelector("#progress");
+      let index = 0;
+      function show(next) {
+        index = Math.max(0, Math.min(slides.length - 1, next));
+        slides.forEach((slide, i) => slide.classList.toggle("is-active", i === index));
+        progress.style.width = `${((index + 1) / slides.length) * 100}%`;
+      }
+      window.addEventListener("keydown", (event) => {
+        if (["ArrowRight", " ", "PageDown"].includes(event.key)) show(index + 1);
+        if (["ArrowLeft", "PageUp"].includes(event.key)) show(index - 1);
+      });
+      show(0);
+    </script>
+  </body>
+</html>

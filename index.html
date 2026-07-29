@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>自律庄园 | 游戏化身心管理 Demo</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#demo" aria-label="自律庄园首页">
+        <span class="brand-mark">自</span>
+        <span>
+          <strong>自律庄园</strong>
+          <small>自律成长 × 公益贡献 Demo</small>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="页面导航">
+        <a href="#demo">体验</a>
+        <a href="#validation">数据</a>
+        <a href="#impact">公益</a>
+        <a href="#shop">商店</a>
+        <a href="#case">作品说明</a>
+        <a href="#assets">展示材料</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="intro-band" id="demo">
+        <div class="intro-copy">
+          <p class="eyebrow">Portfolio Project · Self Growth × Public Benefit</p>
+          <h1>打卡、赚金币，亲手布置你的<span class="nowrap">自律庄园。</span></h1>
+          <p class="intro-text">
+            完成健身、冥想、阅读、学习、早睡、日记等任务，获得金币、经验与公益能量。
+            金币用于装扮庄园，公益能量可投入综合公益项目池，形成模拟公益闭环。
+          </p>
+        </div>
+        <div class="hero-actions" aria-label="演示操作">
+          <button class="secondary-action" id="reset-demo" type="button">重置今日</button>
+          <button class="secondary-action" id="clear-demo" type="button">清空演示</button>
+        </div>
+      </section>
+
+      <section class="demo-grid app-shell lovable-shell" aria-label="自律庄园交互体验">
+        <section class="panel habits-panel" aria-labelledby="habits-title">
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker">Step 1</p>
+              <h2 id="habits-title">今日打卡</h2>
+            </div>
+            <span class="progress-pill"><span id="progress-value">0/6</span> 完成</span>
+          </div>
+          <div class="progress-track" aria-hidden="true">
+            <span id="progress-bar"></span>
+          </div>
+          <div class="habit-list" id="habit-list"></div>
+        </section>
+
+        <section class="panel manor-panel" aria-labelledby="manor-title">
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker">Main Space</p>
+              <h2 id="manor-title">庄园画布</h2>
+            </div>
+          </div>
+          <div class="stats-grid">
+            <div class="stat stat-chip">
+              <span>金币</span>
+              <strong id="gold-value">0</strong>
+            </div>
+            <div class="stat stat-chip">
+              <span>等级</span>
+              <strong id="level-value">Lv.1</strong>
+            </div>
+            <div class="stat stat-chip">
+              <span>房屋</span>
+              <strong id="house-level-value">Lv.1</strong>
+            </div>
+            <div class="stat stat-chip">
+              <span>经验</span>
+              <strong id="exp-value">0/100</strong>
+            </div>
+            <div class="stat stat-chip">
+              <span>连续</span>
+              <strong id="streak-value">1 天</strong>
+            </div>
+            <div class="stat stat-chip">
+              <span>公益能量</span>
+              <strong id="impact-energy-value">0</strong>
+            </div>
+          </div>
+
+          <div class="scene-toolbar" aria-label="庄园场景切换">
+            <button class="scene-tab is-active" type="button" data-scene-target="outdoor">庭院</button>
+            <button class="scene-tab" type="button" data-scene-target="indoor">小屋</button>
+            <span class="drag-hint">点击房门进出 · 购买后拖动布置</span>
+          </div>
+
+          <div class="manor-scene" id="manor-scene" data-scene="outdoor" aria-label="庄园可视化与物品摆放画布">
+            <div class="outdoor-scene scene-view">
+              <div class="scenic-detail light-rays" aria-hidden="true"></div>
+              <div class="cloud cloud-one">☁</div>
+              <div class="cloud cloud-two">☁</div>
+              <div class="sun">☀</div>
+              <div class="hill hill-back"></div>
+              <div class="hill hill-front"></div>
+              <div class="tree tree-left"><span></span></div>
+              <div class="tree tree-right"><span></span></div>
+              <div class="house">
+                <div class="roof"></div>
+                <div class="house-body">
+                  <span class="window"></span>
+                  <button class="door scene-door" type="button" data-scene-target="indoor" aria-label="点击房门进入小屋">
+                    <span>进屋</span>
+                    <small>点击</small>
+                  </button>
+                </div>
+              </div>
+              <div class="lantern lantern-left" aria-hidden="true"></div>
+              <div class="lantern lantern-right" aria-hidden="true"></div>
+              <div class="path"></div>
+              <div class="ground-flora" aria-hidden="true">
+                <span></span><span></span><span></span><span></span><span></span>
+              </div>
+              <div class="decoration-layer" id="outdoor-decoration-layer"></div>
+            </div>
+
+            <div class="indoor-scene scene-view">
+              <div class="room-beam" aria-hidden="true"></div>
+              <div class="room-motes" aria-hidden="true">
+                <span></span><span></span><span></span><span></span>
+              </div>
+              <div class="wall-line line-one"></div>
+              <div class="wall-line line-two"></div>
+              <div class="room-window"><span></span></div>
+              <div class="curtain curtain-left" aria-hidden="true"></div>
+              <div class="curtain curtain-right" aria-hidden="true"></div>
+              <div class="clock">◷</div>
+              <button class="room-door" type="button" data-scene-target="outdoor" aria-label="点击房门回到庭院">
+                <span>出门</span>
+                <small>点击</small>
+              </button>
+              <div class="reading-nook" aria-hidden="true"></div>
+              <div class="floor"></div>
+              <div class="decoration-layer" id="indoor-decoration-layer"></div>
+            </div>
+
+            <div class="scene-empty-copy">
+              <p class="manor-empty" id="manor-empty-state">先积累金币，第一件装饰会出现在这里。</p>
+            </div>
+            <div class="scene-badge" id="scene-badge">庭院</div>
+          </div>
+
+          <div class="placement-tip">
+            <strong>拖动布置：</strong>买到装饰后，直接拖动它到你喜欢的位置。坐标会保存在本地，下次打开还在原位。
+          </div>
+
+          <div class="house-upgrade">
+            <div>
+              <span>房屋升级</span>
+              <strong id="house-name">温馨小屋</strong>
+              <small id="house-upgrade-cost">80 金币升级</small>
+            </div>
+            <button id="upgrade-house" type="button">升级房子</button>
+          </div>
+        </section>
+
+        <aside class="panel butler-panel" aria-labelledby="butler-title">
+          <p class="section-kicker">Growth</p>
+          <h2 id="butler-title">庄园管家</h2>
+          <div class="butler-avatar" aria-hidden="true">管家</div>
+          <p id="butler-message" class="butler-message">
+            欢迎来到自律庄园。先完成一个今日习惯，让庄园开始生长。
+          </p>
+          <div class="butler-notes">
+            <span>解释结果</span>
+            <span>鼓励行动</span>
+            <span>提示下一步</span>
+          </div>
+        </aside>
+      </section>
+
+      <section class="validation-band" id="validation" aria-labelledby="validation-title">
+        <div class="section-heading">
+          <p class="section-kicker">Step 2 · Validation Loop</p>
+          <h2 id="validation-title">新手引导与数据闭环</h2>
+          <p>
+            这一块用于回应作品集追问：面试官不只看到功能，还能看到核心路径是否被走通、哪些行为被记录、后续如何做数据复盘。
+          </p>
+        </div>
+        <div class="validation-grid">
+          <article class="validation-card">
+            <div class="validation-card-head">
+              <div>
+                <p class="section-kicker">Onboarding</p>
+                <h3>新手引导</h3>
+              </div>
+              <span><span id="onboarding-progress">0/4</span> 完成</span>
+            </div>
+            <ol class="onboarding-list" id="onboarding-list"></ol>
+          </article>
+          <article class="validation-card">
+            <div class="validation-card-head">
+              <div>
+                <p class="section-kicker">Metrics</p>
+                <h3>数据闭环</h3>
+              </div>
+            </div>
+            <div class="validation-metrics" id="validation-metrics"></div>
+            <p class="validation-note">
+              当前数据来自浏览器本地演示行为，用于展示产品验证思路；真实上线后可替换为埋点口径和用户样本数据。
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="impact-band" id="impact" aria-labelledby="impact-title">
+        <div class="section-heading">
+          <p class="section-kicker">Step 4 · Public Benefit</p>
+          <h2 id="impact-title">公益项目池</h2>
+          <p>
+            作品集版本先用公益能量模拟真实捐赠路径：用户完成自律行为后，可以把能量投向动物救助、助学、灾区援助、环保和医疗援助等方向。
+          </p>
+        </div>
+        <div class="impact-summary">
+          <strong>模拟公益闭环</strong>
+          <span>打卡产生公益能量，用户选择支持方向，项目进度即时增长；真实落地阶段可接入合规公益机构、品牌配捐和公开凭证。</span>
+        </div>
+        <div class="impact-list" id="impact-list"></div>
+      </section>
+
+      <section class="shop-band" id="shop" aria-labelledby="shop-title">
+        <div class="section-heading">
+          <p class="section-kicker">Step 5</p>
+          <h2 id="shop-title">庄园商店</h2>
+          <p>金币不是一个抽象数字，它会变成庄园里的物品。商品状态会随金币和库存变化。</p>
+        </div>
+        <div class="shop-list" id="shop-list"></div>
+      </section>
+
+      <section class="case-band" id="case" aria-labelledby="case-title">
+        <div class="case-intro">
+          <p class="section-kicker">Portfolio Case</p>
+          <h2 id="case-title">作品集说明</h2>
+          <p>
+            这个项目的重点不是把功能做多，而是证明“自律行为 - 即时奖励 - 庄园建设 - 公益贡献 - 再行动”的闭环成立。
+            首屏负责让人直接体验，下方负责说明产品思考。
+          </p>
+        </div>
+
+        <div class="case-grid">
+          <article>
+            <span>01</span>
+            <h3>用户痛点</h3>
+            <p>传统打卡工具反馈弱、成长不可见，用户完成动作后很难感受到“今天的努力改变了什么”。</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>产品机制</h3>
+            <p>把打卡转化为金币、经验、庄园装饰和公益能量，让抽象坚持同时产生个人成长和社会价值。</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>MVP 取舍</h3>
+            <p>第一版保留打卡、奖励、庄园、公益项目池、商店和 AI 反馈。公益捐赠先做模拟，不接真实支付。</p>
+          </article>
+          <article>
+            <span>04</span>
+            <h3>指标意识</h3>
+            <p>后续可关注首次打卡率、次日留存、公益能量投入率、项目偏好分布和商店购买转化率。</p>
+          </article>
+        </div>
+
+        <div class="handoff-note">
+          <strong>和 Coze 原型的关系：</strong>
+          当前仓库里的 Coze/Python Agent 已有打卡、金币、等级、商店和自定义习惯工具。
+          这个 HTML Demo 先用本地状态模拟核心体验，后续可以接入 Agent HTTP 接口，让 AI 管家支持自然语言操作。
+        </div>
+
+        <div class="iteration-record" aria-label="迭代记录">
+          <h3>迭代记录</h3>
+          <div class="iteration-list">
+            <article><span>V1</span><p>完成打卡、金币、经验、商店和 AI 管家反馈，验证最小激励闭环。</p></article>
+            <article><span>V2</span><p>加入庭院与小屋双场景、点击房门进出、物品拖拽摆放和房屋升级。</p></article>
+            <article><span>V3</span><p>引入公益能量与综合公益项目池，把个人坚持连接到模拟公益贡献。</p></article>
+            <article><span>V4</span><p>补充新手引导、数据闭环面板和本地行为指标，强化项目可验证性。</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="portfolio-assets" id="assets" aria-labelledby="assets-title">
+        <div class="section-heading">
+          <p class="section-kicker">Portfolio Materials</p>
+          <h2 id="assets-title">作品集展示材料</h2>
+          <p>这部分用于补充简历链接：一张概念海报，三份可打开的网页展示材料，分别适合快速浏览、产品答辩和治愈氛围表达。</p>
+        </div>
+        <div class="asset-grid">
+          <a class="asset-card" href="./assets/posters/self-manor-concept-poster.png" target="_blank" rel="noreferrer">
+            <img src="./assets/posters/self-manor-concept-poster.png" alt="自律庄园蓝绿色概念海报">
+            <span class="asset-chip">GPT Image 海报</span>
+            <strong>蓝绿色概念视觉</strong>
+            <span>用于作品集封面、简历项目截图和产品概念表达。</span>
+          </a>
+          <a class="asset-card" href="./slides/html-ppt/index.html" target="_blank" rel="noreferrer">
+            <span class="asset-chip">HTML-PPT</span>
+            <strong>科技感作品集答辩</strong>
+            <span>偏产品面试讲述：问题、闭环、MVP、数据、公益机制和下一步。</span>
+          </a>
+          <a class="asset-card" href="./slides/guizang-ppt/index.html" target="_blank" rel="noreferrer">
+            <span class="asset-chip">Guizang Web PPT</span>
+            <strong>瑞士风网页展示 PPT</strong>
+            <span>偏视觉展示：用大标题、网格和产品系统图快速讲清项目价值。</span>
+          </a>
+          <a class="asset-card" href="./slides/healing-storybook/index.html" target="_blank" rel="noreferrer">
+            <span class="asset-chip">Healing Storybook</span>
+            <strong>治愈绘本版展示册</strong>
+            <span>偏情绪价值表达：用温馨卡通画风、小动物伙伴和公益故事讲清产品氛围。</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <script src="./app.browser.js"></script>
+  </body>
+</html>
