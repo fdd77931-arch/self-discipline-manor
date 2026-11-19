@@ -16,3 +16,19 @@
 .room-notebook {width:min(90vw,380px);padding:22px;border:1px solid #c9b797;border-radius:16px;color:#3a432e;background:#fff9ec;}
 .room-notebook::backdrop {background:#14251ccc}
 .room-notebook textarea {display:block;box-sizing:border-box;width:100%;min-height:120px;margin:12px 0;padding:10px;font:inherit;}
+
+.manor-scene .scene-view button[data-scene-target],
+.manor-scene .scene-view button[data-scene-target]:hover,
+.manor-scene .scene-view button[data-scene-target]:focus-visible {
+  min-width:44px; min-height:44px; width:44px; height:48px; padding:0;
+  border:0; background:transparent; box-shadow:none; cursor:pointer;
+}
+.manor-scene .scene-view button[data-scene-target] span { display:block; font:32px/1 system-ui; filter:drop-shadow(0 2px 2px #38260ca6); }
+.bag-trigger { display:inline-flex; gap:5px; align-items:center; padding:3px 10px; min-height:42px; border:1px solid #b6c3ac; border-radius:14px; background:#fff9ea; color:#304431; cursor:pointer; }
+.bag-trigger img,.bag-row img { object-fit:contain; }
+.bag-header,.bag-row {display:flex;align-items:center;gap:12px;}
+.bag-header {justify-content:space-between;margin-bottom:12px}
+#bag-items {max-height:55vh;overflow-y:auto}
+.bag-row {border-top:1px solid #dbd1b9;padding:6px 0}
+.bag-row img {width:54px;height:48px}
+.bag-row small {margin-left:auto}

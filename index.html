@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>自律庄园 | 游戏化身心管理 Demo</title><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%20width%3D%2240%22%20height%3D%2240%22%20aria-hidden%3D%22true%22%3E%3Crect%20width%3D%2248%22%20height%3D%2248%22%20rx%3D%2211%22%20fill%3D%22%23f8e9c7%22%2F%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23654c31%22%20stroke-width%3D%222.5%22%20stroke-linejoin%3D%22round%22%20stroke-linecap%3D%22round%22%3E%3Cpath%20d%3D%22M9%2023l14-12%2015%2012M13%2022v14h21V22%22%2F%3E%3Cpath%20fill%3D%22%23bf744c%22%20d%3D%22M19%2036v-8a4%204%200%200%201%208%200v8z%22%2F%3E%3Cpath%20d%3D%22M9%2037h31m-7-23c-1-5%201-7%205-8%201%204-1%207-5%208z%22%20fill%3D%22%2392aa62%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
     <link rel="stylesheet" href="./styles.css">
-  <link rel="stylesheet" href="./objects.css">
+  <link rel="stylesheet" href="./objects.css?v=bag">
   </head>
   <body>
     <header class="topbar">
@@ -94,6 +94,7 @@
           <div class="scene-toolbar" aria-label="庄园场景切换">
             <button class="scene-tab is-active" type="button" data-scene-target="outdoor">庭院</button>
             <button class="scene-tab" type="button" data-scene-target="indoor">小屋</button>
+            <button type="button" class="bag-trigger" id="open-bag" aria-haspopup="dialog"><img src="./assets/objects/education-aid.webp" width="30" height="30" alt="">我的背包</button>
             <span class="drag-hint">点击房门进出 · 购买后拖动布置</span>
           </div>
 
@@ -112,8 +113,7 @@
                 <div class="house-body">
                   <span class="window"></span>
                   <button class="door scene-door" type="button" data-scene-target="indoor" aria-label="点击房门进入小屋">
-                    <span>进屋</span>
-                    <small>点击</small>
+                    <span aria-hidden="true">🚪</span>
                   </button>
                 </div>
               </div>
@@ -138,8 +138,7 @@
               <div class="curtain curtain-right" aria-hidden="true"></div>
               <div class="clock">◷</div>
               <button class="room-door" type="button" data-scene-target="outdoor" aria-label="点击房门回到庭院">
-                <span>出门</span>
-                <small>点击</small>
+                <span aria-hidden="true">🚪</span>
               </button>
               <div class="reading-nook" aria-hidden="true"></div>
               <div class="floor"></div>
@@ -322,8 +321,9 @@
       </section>
     </main>
 
+    <dialog id="inventory" class="room-notebook" aria-labelledby="bag-title"><header class="bag-header"><h2 id="bag-title">我的背包</h2><form method="dialog"><button aria-label="关闭背包">关闭</button></form></header><div id="bag-items"></div></dialog>
     <dialog class="room-notebook" id="room-notebook" aria-labelledby="note-title"><h2 id="note-title">小屋手记</h2><label for="room-note">今天想记下什么？</label><textarea id="room-note" maxlength="1200" placeholder="只保存在当前浏览器"></textarea><p id="room-note-status" role="status"></p><button type="button" data-save>保存手记</button> <form method="dialog" style="display:inline"><button>取消</button></form></dialog>
-    <script src="./app.browser.js?v=cottage-objects"></script>
+    <script src="./app.browser.js?v=manor-bag"></script>
     <script src="./room.js"></script>
   </body>
 </html>
