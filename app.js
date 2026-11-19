@@ -493,8 +493,7 @@ function createPlacedItem(state, item) {
   button.style.top = `${position.y}%`;
   button.setAttribute("aria-label", `拖动摆放${item.name}`);
   button.innerHTML = `
-    <span class="placed-glyph">${item.glyph}</span>
-    <span class="placed-label">${item.name}</span>
+    <img src="./assets/objects/${item.id}.webp" alt="" draggable="false">
   `;
   return button;
 }
@@ -512,7 +511,7 @@ function renderShop(state) {
     const card = createElement("article", `shop-item${owned ? " is-owned" : ""}`);
     card.innerHTML = `
       <div>
-        <strong><span class="shop-glyph">${item.glyph}</span>${item.name}</strong>
+        <img class="shop-art" src="./assets/objects/${item.id}.webp" alt="" loading="lazy"><strong>${item.name}</strong>
         <span>${item.placement === "indoor" ? "室内" : "室外"} · ${item.zone}</span>
       </div>
       <p>${item.effect}</p>
@@ -538,6 +537,7 @@ function renderImpactProjects(state) {
     const card = createElement("article", "impact-card");
     card.dataset.project = project.id;
     card.innerHTML = `
+      <img class="impact-art" src="./assets/objects/${project.id}.webp" alt="" loading="lazy">
       <div class="impact-card-head">
         <div>
           <strong>${project.name}</strong>

@@ -1,0 +1,18 @@
+.impact-card::before { display:none; content:none; }
+.impact-art,.shop-art { display:block; width:100%; object-fit:contain; }
+.impact-art { height:100px; margin:0 auto 6px; }
+.shop-art { height:92px; margin:0 auto 8px; }
+.manor-scene .placed-item,.manor-scene .placed-item:hover,.manor-scene .placed-item.is-dragging {
+  background:transparent; border:0; padding:0; box-shadow:none; min-width:44px; min-height:44px;
+  width:clamp(46px,16%,112px); height:auto; display:grid; place-items:center;
+}
+.manor-scene .item-journal,.manor-scene .item-meditation-cushion {width:clamp(44px,10%,72px)}
+.manor-scene .placed-item img {display:block;width:100%;height:auto;pointer-events:none;filter:drop-shadow(0 2px 2px #43361a40)}
+.manor-scene .placed-item:focus-visible {outline:2px solid #fff5c8}
+.room-tools {position:absolute;right:8px;top:8px;z-index:8;display:flex;gap:4px;}
+.manor-scene[data-scene="outdoor"] .room-tools {display:none}
+.room-tools button,.room-notebook button {min-height:40px;padding:6px 10px;color:#fff9e9;background:#324934;border:1px solid #faf0cf;border-radius:12px;cursor:pointer}
+.manor-scene.room-evening .indoor-scene::after {content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 33% 43%,#ffba5450,transparent 43%),linear-gradient(100deg,#512a1422,#29234180);z-index:4;pointer-events:none;}
+.room-notebook {width:min(90vw,380px);padding:22px;border:1px solid #c9b797;border-radius:16px;color:#3a432e;background:#fff9ec;}
+.room-notebook::backdrop {background:#14251ccc}
+.room-notebook textarea {display:block;box-sizing:border-box;width:100%;min-height:120px;margin:12px 0;padding:10px;font:inherit;}
